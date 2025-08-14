@@ -3,7 +3,7 @@ CC := gcc
 IDIR := ../include
 SRCDIR := ../src
 
-SRCS := calculator.c input.c
+SRCS := calculator.c
 OBJS := $(SRCS:.c=.o)
 
 CFLAGS := -std=c89 -Wall -Werror -I$(IDIR) -g # -fsanitize=address
