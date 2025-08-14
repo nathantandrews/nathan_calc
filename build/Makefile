@@ -3,7 +3,7 @@ CC := gcc
 IDIR := ../include
 SRCDIR := ../src
 
-SRCS := calculator.c
+SRCS := calculator.c tree_node.c ui_gtk.c operator.c
 OBJS := $(SRCS:.c=.o)
 
 CFLAGS := -std=c89 -Wall -Werror -I$(IDIR) -g # -fsanitize=address

@@ -2,33 +2,37 @@
 #include <stdio.h>
 
 #include "bool.h"
-#include "tree.h"
+#include "tree_node.h"
 #include "ui.h"
 
 int main()
 {
-    char* user_input_str = (char*) malloc(sizeof(char) * MAX_INPUT_SIZE);
-    /* 
-    node* tree = node_create();
-    float result; 
-    */
+    char* user_input_str = (char*) malloc(sizeof(char) * MAX_INPUT_SIZE); 
+    tree_node* tree = tree_node_create();
+    float result;
     while (fgets(user_input_str, MAX_INPUT_SIZE, stdin))
     {
-        printf("%s\n", user_input_str);
-        /*
-        if (!node_populate_tree(tree, user_input_str))
+        printf("user_input_str: %s", user_input_str);
+        tree_status_code_t code = tree_node_populate_tree(tree, user_input_str);
+        switch (code)
         {
-            ui_set_screen_text("ERROR");
+            case SUCCESS:
+            {
+                result = tree_node_perform_calculation(tree);
+                ui_input_box_set_float(result);
+                break;
+            }
+            case LOGIC_ERROR:
+            {
+                ui_input_box_set_str("LOGIC ERROR");
+                break;
+            }
+            case SYNTAX_ERROR:
+            {
+                ui_input_box_set_str("SYNTAX ERROR");
+                break;
+            }
         }
-        else
-        {
-            result = node_perform_calculation();
-            ui_display_result(result);
-        }
-        
-        ui_display_calculation();        
-        */
-        break;
     }
     free(user_input_str);
     return 0;
