@@ -7,12 +7,16 @@
 
 int main()
 {
-    char* userInputStr = (char*) malloc(sizeof(char) * MAX_INPUT_SIZE);
+    char* user_input_str = (char*) malloc(sizeof(char) * MAX_INPUT_SIZE);
+    /* 
     node* tree = node_create();
-    float result;
-    while (fgets(userInputStr, MAX_INPUT_SIZE, stdin))
+    float result; 
+    */
+    while (fgets(user_input_str, MAX_INPUT_SIZE, stdin))
     {
-        if (!node_populate_tree(tree, userInputStr))
+        printf("%s\n", user_input_str);
+        /*
+        if (!node_populate_tree(tree, user_input_str))
         {
             ui_set_screen_text("ERROR");
         }
@@ -22,9 +26,10 @@ int main()
             ui_display_result(result);
         }
         
-        ui_display_calculation();
+        ui_display_calculation();        
+        */
         break;
     }
-    free(userInputStr);
+    free(user_input_str);
     return 0;
 }

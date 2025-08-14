@@ -107,9 +107,9 @@ void node_destroy(node* nd)
     }
 }
 
-Bool node_populate_tree(node* nd, char* userInputStr)
+Bool node_populate_tree(node* nd, char* user_input_str)
 {
-    char* iter = userInputStr;
+    char* iter = user_input_str;
     while (*iter != '\0')
     {
         
