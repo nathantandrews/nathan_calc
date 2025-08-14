@@ -11,7 +11,7 @@ LDFLAGS := -lm # -lasan
 
 vpath %.c $(SRCDIR)
 
-all: nathan_calc run clean
+all: nathan_calc run
 
 nathan_calc: $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
