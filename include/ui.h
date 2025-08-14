@@ -5,14 +5,14 @@
 
 typedef struct input_box
 {
-    char input_box_str[MAX_INPUT_SIZE];
-    char last_input_box_str[MAX_INPUT_SIZE];
+    char buf[MAX_INPUT_SIZE];
+    char last_buf[MAX_INPUT_SIZE];
     int len;
 } input_box;
 
-input_box* input_box_create(void);
+input_box* ui_input_box_create(void);
 
-void ui_set_screen_text(char* text);
-void ui_display_result(float result);
+void ui_input_box_set_str(const char text[]);
+void ui_input_box_set_float(float result);
 
 #endif
