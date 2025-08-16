@@ -93,6 +93,7 @@ void tree_node_destroy(tree_node* nd)
     assert(nd != NULL);
     if (nd->left == NULL && nd->right == NULL)
     {
+        free(nd);
         return;
     }
     else if (nd->left != NULL && nd->right == NULL)
