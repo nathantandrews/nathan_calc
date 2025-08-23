@@ -1,39 +1,63 @@
+#include "scanner.h"
+#include "parser.h"
+#include "ui.h"
+#include "input_constants.h"
+#include "status.h"
+
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 
-#include "bool.h"
-#include "tree_node.h"
-#include "ui.h"
+typedef struct calculator
+{
+    char *input_s;
+    float result_f;
+    scanner *sc;
+    parser *ps;
+} calculator;
+
+static calculator *calculator_create();
+static status calculator_destroy(calculator *c);
+static void calculator_run(calculator *c);
+
+static calculator *calculator_create()
+{
+    calculator *c = (calculator*) malloc(sizeof(*c));
+    listener l;
+    c->input_s = (char*) malloc(sizeof(*c->input_s) * INPUT_MAX_LEN);
+    assert(c->input_s);
+    c->sc = scanner_create();
+    c->ps = parser_create();
+    l.cb_fn = &parser_token_event;
+    l.context = c->ps;
+    scanner_set_listener(c->sc, &l);
+    return c;
+}
+
+static status calculator_destroy(calculator *c)
+{
+    free(c->input_s);
+    scanner_destroy(c->sc);
+    parser_destroy(c->ps);
+    
+    free(c);
+    return STATUS_SUCCESS;
+}
+
+static void calculator_run(calculator *c)
+{
+    status scanner_code;
+    while (fgets(c->input_s, INPUT_MAX_LEN, stdin))
+    {
+        scanner_code = scanner_scan(c->sc, c->input_s);
+        status_handle_code(scanner_code);
+    }
+    calculator_destroy(c);
+}
 
 int main()
 {
-    char* user_input_str = (char*) malloc(sizeof(char) * MAX_INPUT_SIZE); 
-    tree_node* tree = tree_node_create();
-    float result;
-    while (fgets(user_input_str, MAX_INPUT_SIZE, stdin))
-    {
-        printf("user_input_str: %s", user_input_str);
-        tree_status_code_t code = tree_node_populate_tree(tree, user_input_str);
-        switch (code)
-        {
-            case SUCCESS:
-            {
-                result = tree_node_perform_calculation(tree);
-                ui_input_box_set_float(result);
-                break;
-            }
-            case LOGIC_ERROR:
-            {
-                ui_input_box_set_str("LOGIC ERROR");
-                break;
-            }
-            case SYNTAX_ERROR:
-            {
-                ui_input_box_set_str("SYNTAX ERROR");
-                break;
-            }
-        }
-    }
-    free(user_input_str);
+    calculator *calc = calculator_create();
+    calculator_run(calc);
     return 0;
 }

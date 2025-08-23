@@ -1,18 +1,18 @@
 #ifndef UI_H
 #define UI_H
 
-#define MAX_INPUT_SIZE 32
+#include "input_constants.h"
 
 typedef struct input_box
 {
-    char buf[MAX_INPUT_SIZE];
-    char last_buf[MAX_INPUT_SIZE];
+    char buf[INPUT_MAX_LEN];
+    char last_buf[INPUT_MAX_LEN];
     int len;
 } input_box;
 
-input_box* ui_input_box_create(void);
+input_box *ui_input_box_create(void);
 
 void ui_input_box_set_str(const char text[]);
-void ui_input_box_set_float(float result);
+void ui_input_box_set_float(const float result);
 
 #endif

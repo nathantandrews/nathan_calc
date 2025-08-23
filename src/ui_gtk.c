@@ -1,8 +1,8 @@
+#include "ui.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "ui.h"
 
 input_box* ui_input_box_create(void)
 {
@@ -16,7 +16,7 @@ void ui_input_box_set_str(const char text[])
     printf("setting screen text to %s\n", text);
 }
 
-void ui_input_box_set_float(float result)
+void ui_input_box_set_float(const float result)
 {
     printf("printing result: %f\n", result);
 }
