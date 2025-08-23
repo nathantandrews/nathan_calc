@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "scanner.h": "c",
+        "parser.h": "c",
+        "token_stk.h": "c",
+        "token.h": "c",
+        "input_constants.h": "c",
+        "status_t.h": "c",
+        "tree_node.h": "c",
+        "bool_t.h": "c"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}
