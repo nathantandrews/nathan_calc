@@ -1,5 +1,5 @@
-#ifndef TREE_H
-#define TREE_H
+#ifndef EXPRESSION_H
+#define EXPRESSION_H
 
 #include "operator.h"
 #include "status.h"

@@ -1,4 +1,4 @@
-#include "tree_node.h"
+#include "expression.h"
 #include "operator.h"
 
 #include <stdio.h>
@@ -83,7 +83,7 @@ void tree_node_print(ast_node* nd)
         return;
     }
     tree_node_print(nd->left);
-    operator_print(nd->value.op);
+    operator_to_str(nd->value.op);
     tree_node_print(nd->right);
 }
 
