@@ -6,9 +6,16 @@
 
 const char OPERATORS[] = "()^*/+-,=";
 
-/*@TODO*/
-bool is_operator(char *s)
+bool is_operator(char c)
 {
+    int i;
+    for (i = 0; i < OPERATORS_LEN; ++i)
+    {
+        if (c == OPERATORS[i])
+        {
+            return TRUE;
+        }
+    }
     return FALSE;
 }
 
