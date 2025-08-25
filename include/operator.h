@@ -15,7 +15,7 @@ typedef enum calc_operator
     CALC_OPERATOR_COUNT
 } calc_operator;
 
-bool is_operator(char c);
-void operator_print(calc_operator op);
+bool is_operator(char *s);
+const char *operator_to_str(calc_operator op);
 
 #endif
