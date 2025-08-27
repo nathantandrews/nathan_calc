@@ -7,7 +7,13 @@
         "input_constants.h": "c",
         "status_t.h": "c",
         "tree_node.h": "c",
-        "bool_t.h": "c"
+        "bool_t.h": "c",
+        "stdlib.h": "c",
+        "stdio.h": "c",
+        "status.h": "c",
+        "logger.h": "c",
+        "ui.h": "c",
+        "string.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

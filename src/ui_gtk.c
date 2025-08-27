@@ -1,8 +1,11 @@
 #include "ui.h"
+#include "logger.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+MODULE_DEBUG(ui_gtk)
 
 input_box* ui_input_box_create(void)
 {
@@ -13,10 +16,10 @@ input_box* ui_input_box_create(void)
 
 void ui_input_box_set_str(const char text[])
 {
-    printf("setting screen text to %s\n", text);
+    ui_gtk_log_info("setting screen text to %s\n", text);
 }
 
 void ui_input_box_set_float(const float result)
 {
-    printf("printing result: %f\n", result);
+    ui_gtk_log_info("printing result: %f\n", result);
 }

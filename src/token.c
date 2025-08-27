@@ -1,5 +1,4 @@
 #include "token.h"
-#include "input_constants.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -8,7 +7,7 @@
 void token_init(token *t, token_type type, const char *value)
 {
     t->type = type;
-    strncpy(t->value, value, TOKEN_MAX_LEN);
+    strncpy_s(t->value, sizeof(*value), value, TOKEN_MAX_LEN);
 }
 
 token_type token_get_type(const token *t)

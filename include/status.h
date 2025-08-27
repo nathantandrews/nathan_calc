@@ -12,8 +12,6 @@ typedef enum status
     STATUS_COUNT
 } status;
 
-
-void status_handle_code(status scanner_code);
-
+const char *status_to_str(status s);
 
 #endif

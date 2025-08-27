@@ -1,7 +1,0 @@
-#ifndef INPUT_CONSTANTS_H
-#define INPUT_CONSTANTS_H
-
-#define INPUT_MAX_LEN 32
-#define TOKEN_MAX_LEN 32
-
-#endif

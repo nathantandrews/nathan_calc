@@ -1,4 +1,4 @@
-#include "expression.h"
+#include "ast.h"
 #include "operator.h"
 
 #include <stdio.h>
@@ -74,21 +74,7 @@ float tree_node_get_num_value(ast_node* nd)
 }
 
 /*TEST*/
-void tree_node_print(ast_node* nd)
-{
-    assert(nd != NULL);
-    if (nd->type == EXPRESSION_TYPE_NUMBER)
-    {
-        printf("%f", nd->value.number);
-        return;
-    }
-    tree_node_print(nd->left);
-    operator_to_str(nd->value.op);
-    tree_node_print(nd->right);
-}
-
-/*TEST*/
-void tree_node_destroy(ast_node* nd)
+void tree_node_free(ast_node* nd)
 {
     assert(nd != NULL);
     if (nd->left == NULL && nd->right == NULL)
@@ -98,16 +84,16 @@ void tree_node_destroy(ast_node* nd)
     }
     else if (nd->left != NULL && nd->right == NULL)
     {
-        tree_node_destroy(nd->left);
+        tree_node_free(nd->left);
     }
     else if (nd->left == NULL && nd->right != NULL)
     {
-        tree_node_destroy(nd->right);
+        tree_node_free(nd->right);
     }
     else
     {
-        tree_node_destroy(nd->left);
-        tree_node_destroy(nd->right);
+        tree_node_free(nd->left);
+        tree_node_free(nd->right);
     }
 }
 
@@ -130,7 +116,3 @@ float tree_node_perform_calculation(ast_node* nd)
 {
     return 0.0;
 }
-
-
-
-

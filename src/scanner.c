@@ -2,7 +2,7 @@
 #include "token.h"
 #include "bool.h"
 #include "operator.h"
-#include "input_constants.h"
+#include "logger.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,14 +10,23 @@
 #include <string.h>
 #include <ctype.h>
 
+MODULE_DEBUG(scanner)
+
 scanner *scanner_create(void)
 {
     scanner *new_scanner = (scanner*) malloc(sizeof(*new_scanner));
+    
+    if (new_scanner == NULL)
+    {
+        scanner_log_error("scanner not allocated, not enough memory.\n");
+        return NULL;
+    }
     memset(new_scanner, 0, sizeof(*new_scanner));
+
     scanner_set_state(new_scanner, TOKEN_TYPE_DEFAULT);
     return new_scanner;
 }
-void scanner_destroy(scanner *sc)
+void scanner_free(scanner *sc)
 {
     assert(sc != NULL);
     free(sc);
@@ -26,13 +35,13 @@ void scanner_destroy(scanner *sc)
 void scanner_set_state(scanner *sc, const token_type state)
 {
     assert(sc != NULL);
-    printf("scanner_set_state: %s -> %s\n", token_type_to_str(sc->state), token_type_to_str(state));
+    scanner_log_debug("scanner_set_state: %s -> %s\n", token_type_to_str(sc->state), token_type_to_str(state));
     sc->state = state;
 }
 void scanner_set_listener(scanner *sc, const listener *l)
 {
     assert(sc != NULL);
-    printf("scanner_set_listener\n");
+    scanner_log_debug("scanner_set_listener\n");
     sc->l = *l;
 }
 
@@ -68,8 +77,8 @@ status scanner_scan(scanner *sc, const char *input)
     sc->token_buf.rd = input;
     sc->token_buf.wr = 0;
 
-    printf("scanner_scan\n");
-    printf("%s\n", input);
+    scanner_log_debug("scanner_scan\n");
+    scanner_log_debug("%s\n", input);
 
     while (*sc->token_buf.rd != '\0')
     {
@@ -86,13 +95,13 @@ status scanner_scan(scanner *sc, const char *input)
         }
 
 
-        printf("*rd: \"%c\" wr: %d, data: \"%s\"\n", c, sc->token_buf.wr, sc->token_buf.data);
+        scanner_log_debug("*rd: \"%c\" wr: %d, data: \"%s\"\n", c, sc->token_buf.wr, sc->token_buf.data);
 
         switch (sc->state)
         {
             case TOKEN_TYPE_DEFAULT:
             {
-                printf("scanner_state = DEFAULT\n");
+                scanner_log_debug("scanner_state = DEFAULT\n");
                 if (isdigit(c))
                 {
                     scanner_p_accumulate_token(sc);
@@ -112,7 +121,7 @@ status scanner_scan(scanner *sc, const char *input)
             }
             case TOKEN_TYPE_NUMBER:
             {
-                printf("scanner_state = NUMBER\n");
+                scanner_log_debug("scanner_state = NUMBER\n");
                 if (isdigit(c))
                 {
                     scanner_p_accumulate_token(sc);
@@ -131,7 +140,7 @@ status scanner_scan(scanner *sc, const char *input)
             }
             case TOKEN_TYPE_OPERATOR:
             {
-                printf("scanner_state = OPERATOR\n");
+                scanner_log_debug("scanner_state = OPERATOR\n");
                 scanner_p_generate_token(sc);
                 if (isdigit(c))
                 {
@@ -149,7 +158,7 @@ status scanner_scan(scanner *sc, const char *input)
             }
             case TOKEN_TYPE_KEYWORD:
             {
-                printf("scanner_state = KEYWORD\n");
+                scanner_log_debug("scanner_state = KEYWORD\n");
                 if (isalnum(c))
                 {
                     scanner_p_accumulate_token(sc);
@@ -163,7 +172,7 @@ status scanner_scan(scanner *sc, const char *input)
             }
             default:
             {
-                printf("ERROR: INVALID STATE\n");
+                scanner_log_error("INVALID STATE\n");
                 break;
             }
         }

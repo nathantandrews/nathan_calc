@@ -3,6 +3,7 @@
 
 #include "token.h"
 #include "status.h"
+#include "logger.h"
 
 typedef void (*listener_cb)(void *context, const token *t);
 
@@ -26,7 +27,7 @@ typedef struct scanner
 } scanner;
 
 scanner *scanner_create(void);
-void scanner_destroy(scanner *sc);
+void scanner_free(scanner *sc);
 
 void scanner_set_state(scanner *sc, const token_type state);
 void scanner_set_listener(scanner *sc, const listener *l);

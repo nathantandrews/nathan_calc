@@ -1,7 +1,7 @@
 #ifndef TOKEN_H
 #define TOKEN_H
 
-#include "input_constants.h"
+#define TOKEN_MAX_LEN 32
 
 typedef enum token_type
 {

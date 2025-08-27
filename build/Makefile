@@ -3,10 +3,23 @@ CC := gcc
 IDIR := ../include
 SRCDIR := ../src
 
-SRCS := calculator.c operator.c parser.c scanner.c status_t.c token_stk.c token.c tree_node.c ui_gtk.c
+SRCS := \
+	args.c \
+	ast.c \
+	calculator.c \
+	logger.c \
+	operator.c \
+	parser.c \
+	scanner.c \
+	stack.c \
+	status.c \
+	string_extras.c \
+	token.c \
+	ui_gtk.c
+
 OBJS := $(SRCS:.c=.o)
 
-CFLAGS := -std=c89 -Wall -Werror -I$(IDIR) -g # -fsanitize=address -Wpedantic
+CFLAGS := -std=c89 -Wall -Werror -Wpedantic -I$(IDIR) -g # -fsanitize=address
 LDFLAGS := -lm # -lasan
 
 vpath %.c $(SRCDIR)
@@ -19,8 +32,12 @@ nathan_calc: $(OBJS)
 run:
 	./nathan_calc
 
+debug:
+	./nathan_calc --debug
+
 clean:
-	del /q /f nathan_calc.exe $(OBJS)
+	rm -rf nathan_calc.exe $(OBJS)
+	rm -rf *.log
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<

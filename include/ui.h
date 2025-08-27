@@ -1,7 +1,7 @@
 #ifndef UI_H
 #define UI_H
 
-#include "input_constants.h"
+#define INPUT_MAX_LEN 32
 
 typedef struct input_box
 {
