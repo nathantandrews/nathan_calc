@@ -3,7 +3,7 @@
 
 const char OPERATORS[] = "()^*/+-,=";
 
-bool is_operator(const char c)
+bool is_operator(char c)
 {
     int i;
     
@@ -17,7 +17,7 @@ bool is_operator(const char c)
     return FALSE;
 }
 
-const char *operator_to_str(const calc_operator op)
+const char *operator_to_str(calc_operator op)
 {
     switch (op)
     {
