@@ -10,9 +10,9 @@ typedef struct input_box
     int len;
 } input_box;
 
-input_box *ui_input_box_create(void);
+input_box *ui_input_box_new(void);
 
 void ui_input_box_set_str(const char text[]);
 void ui_input_box_set_float(const float result);
 
-#endif
+#endif /* UI_H */

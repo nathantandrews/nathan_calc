@@ -1,7 +1,7 @@
-#ifndef STACK_H
-#define STACK_H
+#ifndef NTA_STACK_H
+#define NTA_STACK_H
 
-#include "bool.h"
+#include "nta_bool.h"
 
 typedef struct stack_node
 {
@@ -15,14 +15,14 @@ typedef struct stack
     unsigned len;
 } stack;
 
-stack *stack_create(void);
+stack *stack_new(void);
 void stack_free(stack *stk);
 
 void stack_push(stack *stk, void *data);
 void *stack_pop(stack *stk);
 
-void *stack_peek(stack *stk);
-bool stack_is_empty(stack *stk);
-unsigned stack_get_len(stack *stk);
+void *stack_peek(const stack *stk);
+bool stack_is_empty(const stack *stk);
+unsigned stack_get_len(const stack *stk);
 
-#endif
+#endif /* STACK_H */

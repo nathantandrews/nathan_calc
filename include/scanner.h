@@ -3,7 +3,7 @@
 
 #include "token.h"
 #include "status.h"
-#include "logger.h"
+#include "nta_logger.h"
 
 typedef void (*listener_cb)(void *context, const token *t);
 
@@ -22,11 +22,11 @@ typedef struct scanner
     {
         const char *rd;
         int wr;
-        char data[TOKEN_MAX_LEN];
+        char data[TOKEN_MAX_STRING_SIZE];
     } token_buf;
 } scanner;
 
-scanner *scanner_create(void);
+scanner *scanner_new(void);
 void scanner_free(scanner *sc);
 
 void scanner_set_state(scanner *sc, const token_type state);
@@ -34,4 +34,4 @@ void scanner_set_listener(scanner *sc, const listener *l);
 
 status scanner_scan(scanner *sc, const char *input);
 
-#endif
+#endif /* SCANNER_H */

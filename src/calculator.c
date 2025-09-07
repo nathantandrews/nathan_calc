@@ -1,53 +1,42 @@
+#include "nta_string.h"
+#include "nta_logger.h"
+#include "nta_args.h"
 #include "scanner.h"
 #include "parser.h"
 #include "ui.h"
 #include "status.h"
-#include "logger.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
 
-MODULE_DEBUG(calculator)
+LOG(calculator)
 
 typedef struct calculator
 {
-    char *input_s;
+    string *input_s;
     float result_f;
-    logger *l;
     scanner *sc;
     parser *ps;
 } calculator;
 
-static calculator *calculator_create(void);
-static status calculator_free(calculator *c);
-static void calculator_run(calculator *c);
-
-static calculator *calculator_create(void)
+static calculator *calculator_new(void)
 {
     calculator *c = (calculator*) malloc(sizeof(*c));
     listener l;
 
-    if (c == NULL)
-    {
-        calculator_log_error("calculator not allocated, not enough memory.\n");
-        return NULL;
-    }
+    assert(c != NULL);
     memset(c, 0, sizeof(*c));
 
-    c->input_s = (char*) malloc(sizeof(*c->input_s) * INPUT_MAX_LEN);
-    if (c->input_s == NULL)
-    {
-        calculator_log_error("input string not allocated, not enough memory.\n");
-        return NULL;
-    }
+    c->input_s = string_new();
+    string_resize(c->input_s, INPUT_MAX_LEN);
     memset(c->input_s, 0, sizeof(*c->input_s));
 
-    c->sc = scanner_create();
+    c->sc = scanner_new();
     calculator_log_info("scanner created.\n");
 
-    c->ps = parser_create();
+    c->ps = parser_new();
     calculator_log_info("parser created.\n");
 
     l.cb_fn = &parser_token_event;
@@ -60,9 +49,10 @@ static calculator *calculator_create(void)
     calculator_log_info("calculator created.\n");
     return c;
 }
-
 static status calculator_free(calculator *c)
 {
+    assert(c != NULL);
+
     free(c->input_s);
     calculator_log_info("input string freed.\n");
     scanner_free(c->sc);
@@ -79,20 +69,30 @@ static status calculator_free(calculator *c)
 
 static void calculator_run(calculator *c)
 {
-    while (fgets(c->input_s, INPUT_MAX_LEN, stdin))
+    assert(c != NULL);
+    
+    while (fgets(c->input_s->data, INPUT_MAX_LEN, stdin))
     {
-        scanner_scan(c->sc, c->input_s);
+        /*scanner_scan(c->sc, c->input_s);*/
         /*calculator_log_status(s);*/
-
+        
         
     }
-    calculator_free(c);
 }
 
 int main(int argc, char *argv[])
 {
-    calculator *calc = calculator_create();
+    calculator *calc;
+    bool *flags = malloc(sizeof(*flags) * FLAG_COUNT);
+    
+    args_get_flags(flags, argc, argv);
+    logger_set_debug(flags[FLAG_DEBUG]);
+    
+    calc = calculator_new();
     
     calculator_run(calc);
+    
+    calculator_free(calc);
+    logger_free();
     return 0;
 }

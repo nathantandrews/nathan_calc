@@ -1,10 +1,9 @@
 #ifndef PARSER_H
 #define PARSER_H
-/*parse tokens and keep state of whats expected for valid expression*/
 
 #include "token.h"
 #include "ast.h"
-#include "stack.h"
+#include "nta_stack.h"
 
 typedef struct parser
 {
@@ -12,9 +11,9 @@ typedef struct parser
     stack stk;
 } parser;
 
-parser *parser_create(void);
+parser *parser_new(void);
 void parser_free(parser *ps);
 
 void parser_token_event(void *context, const token *t);
 
-#endif
+#endif /* PARSER_H */

@@ -1,16 +1,13 @@
 #include "operator.h"
-
-#include <stdio.h>
-
-#define OPERATORS_LEN 7
+#include "nta_bool.h"
 
 const char OPERATORS[] = "()^*/+-,=";
 
-bool is_operator(char c)
+bool is_operator(const char c)
 {
     int i;
     
-    for (i = 0; i < OPERATORS_LEN; ++i)
+    for (i = 0; i < OPERATOR_MAX_LEN; ++i)
     {
         if (c == OPERATORS[i])
         {
@@ -20,7 +17,7 @@ bool is_operator(char c)
     return FALSE;
 }
 
-const char *operator_to_str(calc_operator op)
+const char *operator_to_str(const calc_operator op)
 {
     switch (op)
     {

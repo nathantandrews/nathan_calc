@@ -6,7 +6,7 @@
 #include <string.h>
 #include <assert.h>
 
-ast_node* tree_node_create(void)
+ast_node* tree_node_new(void)
 {
     ast_node* new_tree_node = (ast_node*) malloc(sizeof(*new_tree_node));
     memset(new_tree_node, 0, sizeof(*new_tree_node));
@@ -73,7 +73,7 @@ float tree_node_get_num_value(ast_node* nd)
     return nd->value.number;
 }
 
-/*TEST*/
+/* TEST */
 void tree_node_free(ast_node* nd)
 {
     assert(nd != NULL);
@@ -97,18 +97,18 @@ void tree_node_free(ast_node* nd)
     }
 }
 
-/*TODO*/
+/* @TODO */
 status tree_node_populate_tree(ast_node* nd, char* user_input_str)
 {
     return STATUS_SUCCESS;
-    /*
+/*
     char* iter = user_input_str;
     while (*iter != '\0')
     {
         
         ++iter;
     }
-    */
+*/
 }
 
 /*TODO*/

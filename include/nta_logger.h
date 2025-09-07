@@ -1,10 +1,11 @@
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef NTA_LOGGER_H
+#define NTA_LOGGER_H
 
 #include "status.h"
+#include "nta_bool.h"
 
-#include <stdio.h>
 #include <stdarg.h>
+#include <stdio.h>
 
 typedef enum message_type
 {
@@ -21,14 +22,15 @@ typedef struct logger
     message_type level;
 } logger;
 
-void logger_set_level(message_type type);
+void logger_free(void);
+void logger_set_debug(bool b);
 
 void debug(const char *module, const char *message, ...);
 void info(const char *module, const char *message, ...);
 void warning(const char *module, const char *message, ...);
 void error(const char *module, const char *message, ...);
 
-#define MODULE_DEBUG(x) \
+#define LOG(x) \
     void x##_log_debug(const char *message, ...) { va_list args; va_start(args, message); debug(#x, message, args); va_end(args); } \
     void x##_log_info(const char *message, ...) { va_list args; va_start(args, message); info(#x, message, args); va_end(args); } \
     void x##_log_warning(const char *message, ...) { va_list args; va_start(args, message); warning(#x, message, args); va_end(args); } \
@@ -37,9 +39,9 @@ void error(const char *module, const char *message, ...);
     { \
         switch (s) \
         { \
-            case STATUS_SUCCESS: { x##_log_info(#x, "success\n"); break; } \
-            default: { x##_log_error("error %u occurred at %s:%d\n", s, __FILE__, __LINE__); break; } \
+            case STATUS_SUCCESS: { x##_log_info("success\n"); break; } \
+            default: { x##_log_error("%s occurred at %s:%d\n", status_to_c_str(s), __FILE__, __LINE__); break; } \
         } \
     }
 
-#endif
+#endif /* LOGGER_H */

@@ -1,13 +1,21 @@
 #include "token.h"
+#include "status.h"
+#include "nta_logger.h"
 
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 #include <assert.h>
+
+LOG(token)
 
 void token_init(token *t, token_type type, const char *value)
 {
+    if (strlen(value) > TOKEN_MAX_STRING_SIZE)
+    {
+        token_log_status(STATUS_LEN_EXCEEDED_ERROR);
+    }
     t->type = type;
-    strncpy_s(t->value, sizeof(*value), value, TOKEN_MAX_LEN);
+    strncpy(t->value, value, TOKEN_MAX_STRING_SIZE);
 }
 
 token_type token_get_type(const token *t)
@@ -21,7 +29,7 @@ const char *token_get_value(const token *t)
     return t->value;
 }
 
-const char *token_type_to_str(token_type type)
+const char *token_type_to_c_str(token_type type)
 {
     switch (type)
     {

@@ -1,8 +1,8 @@
 #include "scanner.h"
+#include "nta_bool.h"
+#include "nta_logger.h"
 #include "token.h"
-#include "bool.h"
 #include "operator.h"
-#include "logger.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,20 +10,15 @@
 #include <string.h>
 #include <ctype.h>
 
-MODULE_DEBUG(scanner)
+LOG(scanner)
 
-scanner *scanner_create(void)
+scanner *scanner_new(void)
 {
     scanner *new_scanner = (scanner*) malloc(sizeof(*new_scanner));
     
-    if (new_scanner == NULL)
-    {
-        scanner_log_error("scanner not allocated, not enough memory.\n");
-        return NULL;
-    }
+    assert(new_scanner != NULL);
     memset(new_scanner, 0, sizeof(*new_scanner));
-
-    scanner_set_state(new_scanner, TOKEN_TYPE_DEFAULT);
+    new_scanner->state = TOKEN_TYPE_DEFAULT;
     return new_scanner;
 }
 void scanner_free(scanner *sc)
@@ -35,7 +30,7 @@ void scanner_free(scanner *sc)
 void scanner_set_state(scanner *sc, const token_type state)
 {
     assert(sc != NULL);
-    scanner_log_debug("scanner_set_state: %s -> %s\n", token_type_to_str(sc->state), token_type_to_str(state));
+    scanner_log_debug("scanner_set_state: %s -> %s\n", token_type_to_c_str(sc->state), token_type_to_c_str(state));
     sc->state = state;
 }
 void scanner_set_listener(scanner *sc, const listener *l)
@@ -47,21 +42,21 @@ void scanner_set_listener(scanner *sc, const listener *l)
 
 static status scanner_p_accumulate_token(scanner *sc)
 {
-    if (sc->token_buf.wr < TOKEN_MAX_LEN - 1)
+    assert(sc != NULL);
+    if (sc->token_buf.wr > TOKEN_MAX_STRING_SIZE)
     {
-        sc->token_buf.data[sc->token_buf.wr] = *sc->token_buf.rd;
-        ++sc->token_buf.wr;
-        sc->token_buf.data[sc->token_buf.wr] = '\0';
+        scanner_log_status(STATUS_LEN_EXCEEDED_ERROR);
+        return STATUS_LEN_EXCEEDED_ERROR;
     }
-    else
-    {
-        return STATUS_TOKEN_MAX_LEN_ERROR;
-    }
+    sc->token_buf.data[sc->token_buf.wr] = *sc->token_buf.rd;
+    ++sc->token_buf.wr;
+    sc->token_buf.data[sc->token_buf.wr] = '\0';
     return STATUS_SUCCESS;
 }
 
 static status scanner_p_generate_token(scanner *sc)
 {
+    assert(sc != NULL);
     token_init(&sc->t, sc->state, sc->token_buf.data);
     sc->token_buf.wr = 0;
     scanner_p_accumulate_token(sc);
@@ -73,7 +68,7 @@ status scanner_scan(scanner *sc, const char *input)
 {
     assert(sc != NULL);
     assert(input != NULL);
-    memset(sc->token_buf.data, 0, TOKEN_MAX_LEN);
+    memset(sc->token_buf.data, 0, TOKEN_MAX_STRING_SIZE);
     sc->token_buf.rd = input;
     sc->token_buf.wr = 0;
 
@@ -91,7 +86,7 @@ status scanner_scan(scanner *sc, const char *input)
         }
         else if (iscntrl(c) || strchr("!@$#?:;\\\'\"`[]{}", c))
         {
-            return STATUS_INVALID_CHARACTER_ERROR;
+            return STATUS_LEXICAL_ERROR;
         }
 
 
