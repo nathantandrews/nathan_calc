@@ -4,40 +4,39 @@ IDIR := ../include
 SRCDIR := ../src
 
 SRCS := \
-	args.c \
 	ast.c \
-	calculator.c \
-	logger.c \
+	nta_args.c \
+	nta_logger.c \
+	nta_stack.c \
+	nta_string.c \
 	operator.c \
 	parser.c \
 	scanner.c \
-	stack.c \
 	status.c \
-	string_extras.c \
 	token.c \
-	ui_gtk.c
+	ui_gtk.c \
+	calculator.c
 
 OBJS := $(SRCS:.c=.o)
 
-CFLAGS := -std=c89 -Wall -Werror -Wpedantic -I$(IDIR) -g # -fsanitize=address
+CFLAGS := -std=c89 -Wall -Werror -Wpedantic -I$(IDIR) -g # -D NDEBUG # -fsanitize=address
 LDFLAGS := -lm # -lasan
 
 vpath %.c $(SRCDIR)
 
-all: nathan_calc run
+all: nta_calc
 
-nathan_calc: $(OBJS)
+nta_calc: $(OBJS)
 	$(CC) $(LDFLAGS) -o $@ $^
 
 run:
-	./nathan_calc
+	./nta_calc
 
 debug:
-	./nathan_calc --debug
+	./nta_calc -m debug -v
 
 clean:
-	rm -rf nathan_calc.exe $(OBJS)
-	rm -rf *.log
+	rm -rf nta_calc.exe *.log $(OBJS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) -o $@ -c $<

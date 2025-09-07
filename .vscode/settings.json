@@ -1,19 +1,18 @@
 {
     "files.associations": {
-        "scanner.h": "c",
         "parser.h": "c",
-        "token_stk.h": "c",
-        "token.h": "c",
-        "input_constants.h": "c",
-        "status_t.h": "c",
-        "tree_node.h": "c",
-        "bool_t.h": "c",
-        "stdlib.h": "c",
+        "ast.h": "c",
+        "operator.h": "c",
+        "nta_string.h": "c",
+        "scanner.h": "c",
+        "nta_logger.h": "c",
         "stdio.h": "c",
+        "stdarg.h": "c",
+        "token.h": "c",
         "status.h": "c",
-        "logger.h": "c",
-        "ui.h": "c",
-        "string.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "disabled"
+        "time.h": "c",
+        "stddef.h": "c",
+        "ctype.h": "c",
+        "nta_bool.h": "c"
+    }
 }
